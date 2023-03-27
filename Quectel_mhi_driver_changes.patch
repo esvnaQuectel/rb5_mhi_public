@@ -1,0 +1,54 @@
+diff --git a/arch/arm64/configs/vendor/kona_QGKI.config b/arch/arm64/configs/vendor/kona_QGKI.config
+index ac376c5220f1..b3eb112a8d43 100644
+--- a/arch/arm64/configs/vendor/kona_QGKI.config
++++ b/arch/arm64/configs/vendor/kona_QGKI.config
+@@ -55,6 +55,8 @@ CONFIG_EDAC_KRYO_ARM64=y
+ CONFIG_EDAC_KRYO_ARM64_PANIC_ON_UE=y
+ CONFIG_INET=y
+ CONFIG_IP_MULTICAST=y
++CONFIG_MHI_BUS=y
++CONFIG_MHI_UCI=y
++CONFIG_MHI_QCOM=y
++CONFIG_MHI_NETDEV=y
+ CONFIG_IP_ADVANCED_ROUTER=y
+ CONFIG_IP_MULTIPLE_TABLES=y
+ CONFIG_IP_MROUTE=y
+diff --git a/drivers/bus/mhi/core/mhi_init.c b/drivers/bus/mhi/core/mhi_init.c
+index 60ae6c51143c..8030e6d3c561 100644
+--- a/drivers/bus/mhi/core/mhi_init.c
++++ b/drivers/bus/mhi/core/mhi_init.c
+@@ -2147,7 +2147,8 @@ static int __init mhi_init(void)
+ 		mhi_dtr_init();
+ 	return ret;
+ }
+-postcore_initcall(mhi_init);
++fs_initcall(mhi_init);
++/* postcore_initcall(mhi_init);*/
+ 
+ static void __exit mhi_exit(void)
+ {
+diff --git a/drivers/bus/mhi/devices/mhi_netdev.c b/drivers/bus/mhi/devices/mhi_netdev.c
+index f55a5ba43add..927fdaf40546 100644
+--- a/drivers/bus/mhi/devices/mhi_netdev.c
++++ b/drivers/bus/mhi/devices/mhi_netdev.c
+@@ -686,7 +686,7 @@ static int mhi_netdev_enable_iface(struct mhi_netdev *mhi_netdev)
+ 	struct device_node *of_node = mhi_dev->dev.of_node;
+ 	struct mhi_netdev_priv *mhi_netdev_priv;
+ 
+-	mhi_netdev->alias = of_alias_get_id(of_node, "mhi_netdev");
++	mhi_netdev->alias = of_alias_get_id(of_node, "mhi-netdev");
+ 	if (mhi_netdev->alias < 0)
+ 		return -ENODEV;
+ 
+diff --git a/drivers/bus/mhi/devices/mhi_uci.c b/drivers/bus/mhi/devices/mhi_uci.c
+index 6466297f0cf2..6a712e35a485 100644
+--- a/drivers/bus/mhi/devices/mhi_uci.c
++++ b/drivers/bus/mhi/devices/mhi_uci.c
+@@ -716,6 +716,7 @@ static const struct mhi_device_id mhi_uci_match_table[] = {
+ 	{ .chan = "SAHARA", .driver_data = 0x8000 },
+ 	{ .chan = "DIAG", .driver_data = 0x1000 },
+ 	{ .chan = "EFS", .driver_data = 0x1000 },
++	{ .chan = "EDL", .driver_data = 0x1000 },
+ 	{ .chan = "QMI0", .driver_data = 0x1000 },
+ 	{ .chan = "QMI1", .driver_data = 0x1000 },
+ 	{ .chan = "TF", .driver_data = 0x1000 },
