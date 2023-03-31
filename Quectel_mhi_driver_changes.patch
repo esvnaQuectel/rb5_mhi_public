@@ -2,7 +2,7 @@ diff --git a/arch/arm64/configs/vendor/kona_QGKI.config b/arch/arm64/configs/ven
 index ac376c5220f1..b3eb112a8d43 100644
 --- a/arch/arm64/configs/vendor/kona_QGKI.config
 +++ b/arch/arm64/configs/vendor/kona_QGKI.config
-@@ -55,6 +55,8 @@ CONFIG_EDAC_KRYO_ARM64=y
+@@ -55,6 +55,10 @@ CONFIG_EDAC_KRYO_ARM64=y
  CONFIG_EDAC_KRYO_ARM64_PANIC_ON_UE=y
  CONFIG_INET=y
  CONFIG_IP_MULTICAST=y
